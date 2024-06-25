@@ -1,6 +1,6 @@
 [package]
 edition = "2021"
-name = "stm32h7" #stm32h753ZIT6
+name = "stm32h7-pwm-servo" #stm32h753ZIT6
 version = "0.1.0"
 
 

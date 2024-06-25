@@ -39,9 +39,9 @@ async fn main(_spawner: Spawner) {
 
     let ch1 = PwmPin::new_ch1(p.PA8, OutputType::PushPull);
     let mut pwm = SimplePwm::new(p.TIM1, Some(ch1), None, None, None, hz(50), Default::default());
-    let max_duty = pwm.get_max_duty();
-    let min_pulse = 500; // Minimum pulse width in microseconds
-    let max_pulse = 2500; // Maximum pulse width in microseconds
+    //let max_duty = pwm.get_max_duty();
+    //let min_pulse: u32 = 500; // Minimum pulse width in microseconds
+    //let max_pulse: u32 = 2500; // Maximum pulse width in microseconds
 
     pwm.enable(Channel::Ch1);
 
@@ -49,15 +49,18 @@ async fn main(_spawner: Spawner) {
 
     loop {
         // Set duty cycle for min pulse width (500µs)
-        pwm.set_duty(Channel::Ch1, (min_pulse * max_duty) / 20_000);
+        pwm.set_duty(Channel::Ch1, 25 as u16) ;
         Timer::after_millis(1000).await;
+        info!("Duty 25");
 
         // Set duty cycle for mid pulse width (1500µs)
-        pwm.set_duty(Channel::Ch1, (1500 * max_duty) / 20_000);
+        pwm.set_duty(Channel::Ch1, 50 as u16);
         Timer::after_millis(1000).await;
+        info!("Duty 50");
 
         // Set duty cycle for max pulse width (2500µs)
-        pwm.set_duty(Channel::Ch1, (max_pulse * max_duty) / 20_000);
+        pwm.set_duty(Channel::Ch1, 75 as u16);
         Timer::after_millis(1000).await;
+        info!("Duty 75");
     }
 }
