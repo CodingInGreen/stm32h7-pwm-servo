@@ -47,20 +47,23 @@ async fn main(_spawner: Spawner) {
 
     info!("PWM initialized");
 
-    loop {
-        // Set duty cycle for min pulse width (500µs)
-        pwm.set_duty(Channel::Ch1, 25 as u16) ;
-        Timer::after_millis(1000).await;
-        info!("Duty 25");
+    let max_duty = pwm.get_max_duty();
+    info!("Max duty cycle value: {}", max_duty);
 
-        // Set duty cycle for mid pulse width (1500µs)
-        pwm.set_duty(Channel::Ch1, 50 as u16);
-        Timer::after_millis(1000).await;
-        info!("Duty 50");
+	loop {
+        // Set duty cycle for min pulse width (500µs, 2.5% of 20ms period)
+        pwm.set_duty(Channel::Ch1, (max_duty as f32 * 0.025) as u16);
+		Timer::after_millis(1000).await;
+        info!("Duty 2.5%");
 
-        // Set duty cycle for max pulse width (2500µs)
-        pwm.set_duty(Channel::Ch1, 75 as u16);
-        Timer::after_millis(1000).await;
-        info!("Duty 75");
+        // Set duty cycle for mid pulse width (1500µs, 7.5% of 20ms period)
+        pwm.set_duty(Channel::Ch1, (max_duty as f32 * 0.075) as u16);
+		Timer::after_millis(1000).await;
+        info!("Duty 7.5%");
+
+        // Set duty cycle for max pulse width (2500µs, 12.5% of 20ms period)
+        pwm.set_duty(Channel::Ch1, (max_duty as f32 * 0.125) as u16);
+		Timer::after_millis(1000).await;
+        info!("Duty 12.5%");
     }
 }
